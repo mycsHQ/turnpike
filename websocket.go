@@ -64,6 +64,7 @@ func (ep *websocketPeer) Send(msg Message) error {
 	}
 	ep.sendMutex.Lock()
 	defer ep.sendMutex.Unlock()
+	ep.conn.SetWriteDeadline(time.Now().Add(5 * time.Second))
 	return ep.conn.WriteMessage(ep.payloadType, b)
 }
 func (ep *websocketPeer) Receive() <-chan Message {
